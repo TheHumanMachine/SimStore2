@@ -188,8 +188,10 @@ int main()
 			}
 
 			if (currentDay % 5 == 0){
-				for (size_t i = 0; player1.getInventorySize() + 1; i++){
+
+				for (size_t i = 1; i < store1.getInventorySize() + 1; i++){
 					if (store1.getItem(i)->getItemQuantity() <= 0){
+
 						store1.getItem(i)->addItemQuantity(5);
 					}
 				}

@@ -12,7 +12,7 @@ public:
 	float setNewCost(double newCost){ _cost = newCost; }
 
 	std::string getName() const { return _name; }
-	float getCost() const { return _cost; }
+	double getCost() const { return floor(_cost * 100.00 + 0.5) / 100.00; }
 	int getItemQuantity() const { return _itemQuantity; }
 	
 	void removeItemQuantity(int removeAmount) { _itemQuantity -= removeAmount; }
