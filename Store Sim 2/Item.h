@@ -8,8 +8,8 @@ class Item
 public:
 	Item(std::string name, int itemQuantity);
 	
-	void changeItemValue(float valueChange){ _cost *= floor(valueChange * 100.00 + 0.5) / 100.00; }
-	float setNewCost(float newCost){ _cost = newCost; }
+	void changeItemValue(double valueChange){ _cost *= floor(valueChange * 100.00 + 0.5) / 100.00; }
+	float setNewCost(double newCost){ _cost = newCost; }
 
 	std::string getName() const { return _name; }
 	float getCost() const { return _cost; }
@@ -21,7 +21,7 @@ public:
 private:
 	int _itemQuantity;
 	std::string _name;
-	float _cost;
+	double _cost;
 
 };
 

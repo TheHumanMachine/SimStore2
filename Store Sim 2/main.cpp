@@ -23,7 +23,7 @@ int main()
 
 	while (!isDone)
 	{
-		std::cout << "Current Day: " << currentDay << std::endl;
+		std::cout << "\nCurrent Day: " << currentDay << std::endl;
 		std::cout << "Store's Money: " << store1.getMoney() << " You're Money: " << player1.getMoney() << std::endl;
 		printMainMenu();
 
@@ -77,16 +77,19 @@ int main()
 			}
 			
 			affordableItemAmount = int(player1.getMoney() / store1.getItem(itemPlace)->getCost());
-			if (itemQuantity > affordableItemAmount){
-				std::cout << "You can not afford that many items, please select another amount" << std::endl;
-				bool quit = false;
-				while (!quit || itemQuantity > affordableItemAmount && itemQuantity > 0){
 
-					std::cout << "Enter -1 to quit buying item" << std::endl;
-					std::cout << "You can afford: " << affordableItemAmount << " item(s)" << std::endl;
-					std::cout << "Pick a quantity that you wish to buy between 1 and " << affordableItemAmount << ": "<< std::endl;
+			if (itemQuantity > affordableItemAmount){
+
+				std::cout << "You can not afford that many items, please select another amount" << std::endl;
+				while (itemQuantity > affordableItemAmount && itemQuantity >= 1){
+
+					std::cout << "\nYou can afford: " << affordableItemAmount << " item(s)" << std::endl;
+					std::cout << "Pick a quantity that you wish to buy between 1 and " << affordableItemAmount << ": ";
 					std::cin >> itemQuantity;
-					
+
+					if (itemQuantity == 0){
+						break;
+					}
 				}
 			}
 
@@ -104,10 +107,16 @@ int main()
 		case 2: //Sell Menu
 
 			std::cout << std::endl;
+
+			std::cout << "\n********* Items to sell *********" << std::endl;
 			player1.printInventory();
 
 			std::cout << "\nWhat item do you want to sell? [1-" << player1.getInventorySize() << "]: ";
 			std::cin >> itemPlace;
+
+			if (itemPlace == -1){
+				break;
+			}
 
 			if (itemPlace < 1 || itemPlace > player1.getInventorySize()){
 				while (itemPlace < 1 || itemPlace > player1.getInventorySize()){
@@ -119,6 +128,7 @@ int main()
 			std::cout << "\nHow many do you want to sell?: ";
 			std::cin >> itemQuantity;
 
+
 			if (itemQuantity < 1 || itemQuantity > player1.getItemQuantity(itemPlace)){
 				std::cout << "Your input was out of range" << std::endl;
 				while (itemQuantity < 1 || itemQuantity > player1.getItemQuantity(itemPlace)){
@@ -128,6 +138,23 @@ int main()
 					}
 					else{
 						std::cout << "You currently don't have any of that item to sell" << std::endl;
+						break;
+					}
+				}
+			}
+
+			
+			affordableItemAmount = int(store1.getMoney() / player1.getItem(itemPlace)->getCost());
+			if (itemQuantity > affordableItemAmount){
+
+				std::cout << "The store can not afford to buy this many items" << std::endl;
+				while (itemQuantity > affordableItemAmount && itemQuantity >= 1){
+
+					std::cout << "\nYou can afford: " << affordableItemAmount << " item(s)" << std::endl;
+					std::cout << "Pick a quantity that you wish to buy between 1 and " << affordableItemAmount << ": ";
+					std::cin >> itemQuantity;
+
+					if (itemQuantity == 0){
 						break;
 					}
 				}
@@ -150,10 +177,11 @@ int main()
 			currentDay += 1;
 			elapsedDays += 1;
 
+			std::cout << "\n***** +1 Day *****" << std::endl;
 
 			for (size_t i = 1; i < player1.getInventorySize() + 1; i++){
 
-				float numberChange = float_dist(rand_engine);
+				double numberChange = float_dist(rand_engine);
 				numberChange = floor(numberChange * 100.00 + 0.5) / 100.00; 
 				player1.getItem(i)->changeItemValue(numberChange);
 				store1.getItem(i)->changeItemValue(numberChange);

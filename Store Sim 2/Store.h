@@ -15,15 +15,15 @@ public:
 
 	bool buyItem(Item *item, int quantity);
 
-	float getMoney() const { return _money; }
-	void removeMoney(float m){ _money -= floor(m * 100.00 + 0.5) / 100.00; }
-	void addMoney(float m) { _money += floor(m * 100.00 + 0.5) / 100.00; }
+	double getMoney() const { return _money; }
+	void removeMoney(double m){ _money -= floor(m * 100.00 + 0.5) / 100.00; }
+	void addMoney(double m) { _money += floor(m * 100.00 + 0.5) / 100.00; }
 
 	void printInventory();
 	void inventoryWelcome();
 
 private:
-	float _money = 100;
+	double _money = 100;
 	std::vector<Item*> _inventory;
 };
 
