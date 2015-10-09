@@ -22,7 +22,7 @@ public:
 	void addMoney(double m) { _money += floor(m * 100.00 + 0.5) / 100.00; }
 
 private:
-	double _money = 100;
+	double _money = 500;
 	std::vector<Item*> _inventory;
 	
 

@@ -22,8 +22,10 @@ void Player::setInventory()
 void Player::printInventory()
 {
 	for (size_t i = 0; i < _inventory.size(); i++){
-		std::cout << i + 1 << " Name: " << _inventory[i]->getName() << " Cost: " << _inventory[i]->getCost() <<
-			" Quantity: " << _inventory[i]->getItemQuantity() << std::endl;
+		if (_inventory[i]->getItemQuantity() > 0){
+			std::cout << i + 1 << " Name: " << _inventory[i]->getName() << " Cost: " << _inventory[i]->getCost() <<
+				" Quantity: " << _inventory[i]->getItemQuantity() << std::endl;
+		}
 	}
 }
 

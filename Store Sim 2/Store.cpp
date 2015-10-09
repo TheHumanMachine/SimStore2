@@ -4,7 +4,6 @@
 Store::Store()
 {
 	setInventory();
-
 }
 
 

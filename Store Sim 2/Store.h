@@ -9,7 +9,7 @@ public:
 	
 	int getInventorySize() const { return _inventory.size(); }
 	Item *getItem(int itemPlace) { return _inventory[itemPlace - 1]; }
-	int getItemQuantity(int itemPlace) const { return _inventory[itemPlace]->getItemQuantity(); }
+	int getItemQuantity(int itemPlace) const { return _inventory[itemPlace - 1]->getItemQuantity(); }
 
 	void setInventory();
 
