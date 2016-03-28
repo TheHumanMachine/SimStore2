@@ -12,7 +12,7 @@ public:
 	int getItemQuantity(int itemPlace) const { return _inventory[itemPlace - 1]->getItemQuantity(); }
 
 	void setInventory();
-
+	void addMoney(){ _money += 100; }
 	bool buyItem(Item *item, int quantity);
 
 	double getMoney() const { return _money; }

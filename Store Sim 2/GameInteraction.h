@@ -12,7 +12,7 @@ public:
 	~GameInteraction();
 	void printMainMenu();
 	void playGame();
-	int getItemPlace(int inventorySize);
+	int getItemPlace(int inventorySize, std::string choice);
 	int getItemQty(int itemQty, int affordableItemAmount);
 
 private:

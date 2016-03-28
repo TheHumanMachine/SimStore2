@@ -34,6 +34,7 @@ void Store::inventoryWelcome()
 
 }
 
+
 bool Store::buyItem(Item *item, int quantity)
 {
 	if (quantity * item->getCost() <= _money){

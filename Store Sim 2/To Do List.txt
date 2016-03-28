@@ -1,0 +1,11 @@
+To do:
+update store money when day cycle increments 
+Item Generation
+Multi store support
+Save game / load game
+
+
+OPTIONAL:
+Add more items - Certain items to certain shops
+
+

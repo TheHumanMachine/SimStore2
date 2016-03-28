@@ -59,7 +59,7 @@ void GameInteraction::playGame()
 			_store1.printInventory();
 
 			//if getItemPlace is not -1 it assumes it a correct input.
-			itemPlace = getItemPlace(_store1.getInventorySize());
+			itemPlace = getItemPlace(_store1.getInventorySize(), "buy");
 			if (itemPlace == -1){
 				break;
 			}
@@ -67,18 +67,19 @@ void GameInteraction::playGame()
 			std::cout << "You can afford up to " << int(_player1.getMoney() / _store1.getItem(itemPlace)->getCost())
 				<< " of these items" << std::endl;
 
-			affordableItemAmount = int(_player1.getMoney() / _store1.getItem(itemPlace)->getCost());
+			affordableItemAmount = int( _player1.getMoney() / _store1.getItem(itemPlace)->getCost() );
+			itemQuantity = getItemQty( _store1.getItemQuantity(itemPlace), affordableItemAmount );
 
-			itemQuantity = getItemQty(_store1.getItemQuantity(itemPlace), affordableItemAmount);
 			if (itemQuantity == -1){
 				break;
 			}
 
-			if (_player1.buyItem(_store1.getItem(itemPlace), itemQuantity)){
-				_store1.addMoney(_store1.getItem(itemPlace)->getCost() * itemQuantity);
+			//_player1.buyItem() Returns True if the item can be bought and False is it can not be bought
+			if ( _player1.buyItem( _store1.getItem(itemPlace), itemQuantity) ){
+				_store1.addMoney( _store1.getItem(itemPlace)->getCost() * itemQuantity );
 				_store1.getItem(itemPlace)->removeItemQuantity(itemQuantity);
-
 			}
+
 			else{
 				std::cout << "You couldn't buy that item." << std::endl;
 			}
@@ -92,12 +93,13 @@ void GameInteraction::playGame()
 			std::cout << "\n********* Items to sell *********" << std::endl;
 			_player1.printInventory();
 
-			itemPlace = getItemPlace(_player1.getInventorySize());
+			itemPlace = getItemPlace( _player1.getInventorySize(), "sell");
 			if (itemPlace == -1){
 				break;
 			}
 
-			affordableItemAmount = int(_store1.getMoney() / _player1.getItem(itemPlace)->getCost());
+			//Store money divided by player's items cost
+			affordableItemAmount = int( _store1.getMoney() / _player1.getItem(itemPlace)->getCost() );
 
 			itemQuantity = getItemQty(_player1.getItemQuantity(itemPlace), affordableItemAmount);
 
@@ -106,6 +108,7 @@ void GameInteraction::playGame()
 				break;
 			}
 
+			//_store1.buyItem() Returns True if the item can be bought and False is it can not be bought
 			if (_store1.buyItem(_player1.getItem(itemPlace), itemQuantity))
 			{
 				_player1.addMoney(_player1.getItem(itemPlace)->getCost() * itemQuantity);
@@ -136,8 +139,9 @@ void GameInteraction::playGame()
 
 				for (size_t i = 1; i < _store1.getInventorySize() + 1; i++){
 					if (_store1.getItem(i)->getItemQuantity() <= 0){
-
-						_store1.getItem(i)->addItemQuantity(5);
+						//Adds more items to store inventory
+						_store1.addMoney();
+						_store1.getItem(i)->addItemQuantity(1);
 					}
 				}
 			}
@@ -158,11 +162,11 @@ void GameInteraction::playGame()
 }
 
 
-int GameInteraction::getItemPlace(int inventorySize)
+int GameInteraction::getItemPlace(int inventorySize, std::string choice)
 {
 	int itemPlace;
-	std::cout << inventorySize << "Inv size" << std::endl;
-	std::cout << "\nWhat item do you want to buy/sell? [1-" << inventorySize << "]: ";
+
+	std::cout << "\nWhat item do you want to " << choice  << " [1-" << inventorySize << "]: ";
 	std::cin >> itemPlace;
 
 	if (itemPlace == -1){
@@ -177,23 +181,22 @@ int GameInteraction::getItemPlace(int inventorySize)
 	}
 
 	return itemPlace;
-
 }
 
 int GameInteraction::getItemQty(int itemQty, int affordableItemAmount)
 {
-	int itemQuantity;
+	int userInputitemQuantity;
 	std::cout << itemQty << std::endl;
 	std::cout << "\nHow many do you want to buy/sell?: ";
-	std::cin >> itemQuantity;
+	std::cin >> userInputitemQuantity;
 
-	if (itemQuantity < 1 || itemQuantity > itemQty){
+	if (userInputitemQuantity < 1 || userInputitemQuantity > itemQty){
 		std::cout << "Your input was out of range" << std::endl;
 
-		while (itemQuantity < 1 || itemQuantity > itemQty){
+		while (userInputitemQuantity < 1 || userInputitemQuantity > itemQty){
 			if (itemQty > 0){
 				std::cout << "Enter a number betwee 1 and " << itemQty << "]";
-				std::cin >> itemQuantity;
+				std::cin >> userInputitemQuantity;
 			}
 			else{
 				return -1;
@@ -201,21 +204,19 @@ int GameInteraction::getItemQty(int itemQty, int affordableItemAmount)
 		}
 	}
 
-	if (itemQuantity > affordableItemAmount){
+	if (userInputitemQuantity > affordableItemAmount){
 
 		std::cout << "The store can not afford to buy this many items" << std::endl;
-		while (itemQuantity > affordableItemAmount && itemQuantity >= 1){
+		while (userInputitemQuantity > affordableItemAmount && userInputitemQuantity >= 1){
 
 			std::cout << "\nOnly: " << affordableItemAmount << " item(s) can be bought/sold" << std::endl;
 			std::cout << "Pick a quantity that you wish to buy between 1 and " << affordableItemAmount << ": ";
-			std::cin >> itemQuantity;
+			std::cin >> userInputitemQuantity;
 
-			if (itemQuantity == 0){
+			if (userInputitemQuantity == 0){
 				return -1;
 			}
 		}
 	}
-
-
-	return itemQuantity;
+	return userInputitemQuantity;
 }
